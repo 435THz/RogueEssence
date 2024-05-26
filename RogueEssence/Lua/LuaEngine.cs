@@ -291,6 +291,7 @@ namespace RogueEssence.Script
             Update,
             SaveData,
             LoadSavedData,
+            AddMenu,
 
             MusicChange,
             GroundEntityInteract,
@@ -1873,6 +1874,17 @@ namespace RogueEssence.Script
         {
             DiagManager.Instance.LogInfo("LuaEngine.OnMenuButtonPressed()...");
             yield return CoroutineManager.Instance.StartCoroutine(m_scrsvc.PublishCoroutine(EServiceEvents.MenuButtonPressed.ToString()));
+        }
+
+        /// <summary>
+        /// Called when a menu is about to be added to the menu stack!
+        /// </summary>
+        public void OnAddMenu(IInteractable menu)
+        {
+            DiagManager.Instance.LogInfo("LuaEngine.OnAddMenu()...");
+            m_scrsvc.Publish(EServiceEvents.AddMenu.ToString(), menu);
+            if (menu is InteractableMenu interactable && ((ILabeled)interactable).HasLabel())
+                DiagManager.Instance.LogInfo("Menu label is: " + interactable.Label);
         }
 
         public void OnNewGame()
